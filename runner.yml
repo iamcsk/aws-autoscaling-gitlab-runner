@@ -221,10 +221,6 @@ Outputs:
     Description: |
       Name of created S3 bucket.
     Value: !Ref 'CacheBucket'
-  ManagerIP:
-    Description: |
-      IP of manager instance.
-    Value: !Ref 'ManagerEIP'
 
 Resources:
   ####################################
@@ -358,6 +354,8 @@ Resources:
       InstanceType: !Ref 'ManagerInstanceType'
       KeyName: !Ref 'ManagerKeyPair'
       IamInstanceProfile: !Ref 'ManagerInstanceProfile'
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
       SecurityGroupIds:
         - !Ref 'ManagerSecurityGroup'
       SubnetId: !Ref 'SubnetId'
@@ -489,11 +487,6 @@ Resources:
         Timeout: 'PT15M'
     DependsOn:
       - 'RunnersSecurityGroup'
-  ManagerEIP:
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: 'vpc'
-      InstanceId: !Ref 'Manager'
 
   ######################
   ### GitLab Runners ###
